@@ -41,11 +41,11 @@ function init() {
   light.position.set(2, 1, 1);
   scene.add(light);
 
-  const image1 = new FlatSprite('textures/image1.jpg', 1);
+  const image1 = new FlatImage('textures/image1.jpg', 1);
   image1.position.set(-1.5, 0, 0);
   scene.add(image1);
 
-  const image2 = new FlatSprite('textures/image2.png', 1);
+  const image2 = new FlatImage('textures/image2.png', 1);
   image2.position.set(1.5, 0, 0);
   scene.add(image2);
 
