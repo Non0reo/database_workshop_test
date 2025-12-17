@@ -1,11 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=BBH+Bartle&family=Sen&display=swap');
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-ui: 'Sen', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-title: 'BBH Bartle', sans-serif;
+
+  --clr-dark: #383636;
+  --clr-dark-semi: rgb(from var(--clr-dark) r g b / 50%);
+  --clr-light: #ffffffde;
+  
+
+  font-family: var(--font-ui);
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: var(--clr-light);
+  background-color: var(--clr-dark);
+
+ 
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -15,4 +27,69 @@
 
 body {
   margin: 0
+}
+
+#app {
+  width: 100svw;
+  height: 100svh;
+
+  /* display: grid;
+  place-content: center;
+  align-items: end;
+
+  > * {
+    grid-area: 1 / 1;
+  } */
+}
+
+/* canvas {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+} */
+
+
+
+#ui-container {
+  position: absolute;
+  bottom: 0;
+
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  #video-input {
+    width: 100%;
+    margin: 1rem;
+
+    color: var(--clr-light);
+    background-color: var(--clr-dark-semi);
+
+    font-family: var(--font-ui);
+    font-size: 1.5rem;
+    padding: 10px 1rem;
+    text-decoration: none;
+    border-radius: 100vmin; /*up to date browsers support this, but you can add prefixes if you want*/
+
+    border: none;
+    outline: var(--clr-dark-semi) solid 5px;
+    outline-offset: 0.2rem;
+
+    &:focus {
+      outline-color: var(--clr-light);
+    }
+  }
+
+  #video-submit {
+    width: 5em;
+    height: 5em;
+    margin: 1em;
+    border-radius: 100vmin;
+    background-color: var(--clr-light);
+    border: none;
+
+    outline: var(--clr-dark-semi) solid 5px;
+    outline-offset: 0.2rem;
+  }
 }

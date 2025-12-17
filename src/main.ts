@@ -1,33 +1,32 @@
 import './style.css'
 import * as THREE from 'three';
+import './gui.ts';
 import { OrbitControls } from 'three/addons';
-
 import { FlatImage, FlatSprite } from './sprites';
+import { initGuiEvents } from './gui';
 
-let renderer: THREE.WebGLRenderer;
+import { createRenderer, renderer } from './utils/renderer';
+import { camera } from './utils/camera';
+
 let scene: THREE.Scene;
-let camera: THREE.PerspectiveCamera
-let orbit: OrbitControls;
+
 
 function init() {
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  document.querySelector('#app')!.appendChild( renderer.domElement );
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(window.devicePixelRatio);
+  createRenderer(draw);
   
   scene = new THREE.Scene();
-  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  orbit = new OrbitControls(camera, renderer.domElement);
-  orbit.enableDamping = true;
-  orbit.dampingFactor = 0.04;
 
+  
   //renderer.domElement = document.querySelector('#app')!;
   
 
-  scene.background = new THREE.Color(0x5a8baa);
+  scene.background = new THREE.Color(0x202536);
 
-  camera.position.set(0, 0, 2);
+  testSprites();
+  initGuiEvents();
+}
 
+function testSprites() {
   const geometry = new THREE.BoxGeometry();
   const material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
   const cube = new THREE.Mesh(geometry, material);
@@ -48,8 +47,6 @@ function init() {
   const image2 = new FlatImage('textures/image2.png', 1);
   image2.position.set(1.5, 0, 0);
   scene.add(image2);
-
-  renderer.setAnimationLoop(draw);
 }
 
 

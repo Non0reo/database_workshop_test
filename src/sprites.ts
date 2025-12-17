@@ -33,6 +33,7 @@ class FlatImage extends THREE.Object3D {
         /* this.material = new THREE.MeshBasicMaterial({ map: this.texture, side: THREE.DoubleSide }); */
 
         this.material = new THREE.ShaderMaterial({
+            side: THREE.DoubleSide,
             uniforms: {
                 uTexture: { value: this.texture },
                 uTime: { value: 0.0 }
