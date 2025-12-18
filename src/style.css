@@ -7,6 +7,7 @@
   --clr-dark: #383636;
   --clr-dark-semi: rgb(from var(--clr-dark) r g b / 50%);
   --clr-light: #ffffffde;
+  --clr-light-semi: rgb(from var(--clr-light) r g b / 80%);
   
 
   font-family: var(--font-ui);
@@ -32,6 +33,7 @@ body {
 #app {
   width: 100svw;
   height: 100svh;
+  overflow: hidden;
 
   /* display: grid;
   place-content: center;
@@ -59,7 +61,7 @@ body {
   justify-content: center;
   align-items: center;
 
-  #video-input {
+  input[type="text"] {
     width: 100%;
     margin: 1rem;
 
@@ -77,19 +79,26 @@ body {
     outline-offset: 0.2rem;
 
     &:focus {
-      outline-color: var(--clr-light);
+      outline-color: var(--clr-light-semi);
     }
   }
 
-  #video-submit {
-    width: 5em;
-    height: 5em;
+  #button-submit {
+    min-width: 4em;
+    min-height: 4em;
     margin: 1em;
     border-radius: 100vmin;
-    background-color: var(--clr-light);
+    background-color: var(--clr-dark-semi);
+    color: var(--clr-light);
     border: none;
 
     outline: var(--clr-dark-semi) solid 5px;
     outline-offset: 0.2rem;
+
+    &::after {
+      content: '➤';
+      color: var(--clr-light-semi);
+      font-size: 2rem;
+    }
   }
 }

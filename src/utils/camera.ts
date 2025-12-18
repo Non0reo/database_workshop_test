@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/addons';
 let camera: THREE.PerspectiveCamera
 let orbit: OrbitControls;
 
-function initCamera(renderer: THREE.WebGLRenderer) {
+function createCamera(renderer: THREE.WebGLRenderer) {
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     orbit = new OrbitControls(camera, renderer.domElement);
     orbit.enableDamping = true;
@@ -15,4 +15,4 @@ function initCamera(renderer: THREE.WebGLRenderer) {
     return { camera, orbit };
 }
 
-export {}
+export { camera, orbit, createCamera };

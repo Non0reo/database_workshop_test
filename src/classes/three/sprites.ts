@@ -1,8 +1,5 @@
 import * as THREE from 'three';
 
-
-
-
 class FlatSprite extends THREE.Object3D {
     private texture: THREE.Texture;
     private material: THREE.SpriteMaterial

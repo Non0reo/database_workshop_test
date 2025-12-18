@@ -3,7 +3,7 @@
 function initGuiEvents() {
   window.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
-      const inputField = document.querySelector('#video-input') as HTMLInputElement;
+      const inputField = document.querySelector('#input-music') as HTMLInputElement;
       if (inputField) {
         createVideoEntry(inputField.value);
         inputField.value = '';
