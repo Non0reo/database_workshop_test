@@ -4,6 +4,7 @@ import { createScene, scene } from '../utils/scene.ts';
 
 import { testSprites } from '../utils/debug.ts';
 import { FlatImage, FlatSprite } from './three/sprites.ts';
+import { AlbumCover } from './three/albums.ts';
 
 import { APIManager } from './api_manager.ts';
 
@@ -18,9 +19,11 @@ export class App {
     testSprites();
     this.initGuiEvents();
 
-    /* setTimeout(async () => {
-      console.log(await this.apiManager.sendSearchRequest('Watch Me Keiona'))
-    }, 1000) */
+    this.apiManager.getTrackDatabase().then(tracks => {
+      tracks.forEach(track => {
+        scene.add(new AlbumCover(track));
+      });
+    });
   }
 
   private draw() {
@@ -37,12 +40,18 @@ export class App {
         if (inputField.value) {
 
           const result = await this.apiManager.sendSearchRequest(inputField.value);
-          console.log(result);
+          const bestResult = await this.apiManager.getBestTrack({ data: result });
 
-          if (result) {
-            this.apiManager.musicPreview(result['data'][0]);
+          if (bestResult) {
 
-            scene.add(new FlatSprite(result['data'][0].album.cover_xl, 1));
+            this.apiManager.putInDatabase(bestResult);
+            this.apiManager.musicPreview(bestResult);
+            /* scene.add(new FlatSprite(bestResult.album_cover, 1)); */
+            scene.add(new AlbumCover(bestResult));
+
+          } else {
+            inputField.setCustomValidity('No results found');
+            inputField.reportValidity();
           }
 
           inputField.value = '';
@@ -51,11 +60,11 @@ export class App {
         }
       }
 
-      if (event.key === 'Space') {
+      /* if (event.key === 'Space') {
         this.apiManager.sendYTMusicSearchRequest('Imagine Dragons Believer').then(result => {
           console.log(result);
         });
-      }
+      } */
     });
   }
 }
