@@ -3,7 +3,7 @@ import { createCamera, camera, orbit } from '../utils/camera.ts';
 import { createScene, scene } from '../utils/scene.ts';
 
 import { testSprites } from '../utils/debug.ts';
-import { FlatImage, FlatSprite } from '../classes/three/sprites';
+import { FlatImage, FlatSprite } from './three/sprites.ts';
 
 import { APIManager } from './api_manager.ts';
 
@@ -42,13 +42,19 @@ export class App {
           if (result) {
             this.apiManager.musicPreview(result['data'][0]);
 
-            scene.add(new FlatSprite(result['data'][0].album.cover_medium, 1));
+            scene.add(new FlatSprite(result['data'][0].album.cover_xl, 1));
           }
 
           inputField.value = '';
 
 
         }
+      }
+
+      if (event.key === 'Space') {
+        this.apiManager.sendYTMusicSearchRequest('Imagine Dragons Believer').then(result => {
+          console.log(result);
+        });
       }
     });
   }

@@ -13,6 +13,11 @@ class FlatSprite extends THREE.Object3D {
         this.geometry = new THREE.Sprite(this.material);
         this.geometry.scale.set(size, size, 1);
 
+        this.position.set(
+            Math.random() * 4 - 2,
+            Math.random() * 4 - 2,
+            Math.random() * 4 - 2
+        )
         this.add(this.geometry);
     }
 }

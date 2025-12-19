@@ -1,10 +1,23 @@
 import gsap from 'gsap';
+import YTMusic from 'ytmusic-api';
+
+const maxVolume: number = 0.2;
 
 export class APIManager {
   public lastSearchCall?: Object;
   public audioElement?: HTMLAudioElement;
+  private ytmusic = new YTMusic();
 
   constructor() {
+    this.ytmusic.initialize();
+  }
+
+  public async sendYTMusicSearchRequest(q: string) {
+    /* const result = await this.ytmusic.search(q);
+    console.log(result); */
+    const result = await this.ytmusic.search("Never gonna give you up");
+    console.log(result);
+    return this.lastSearchCall = result;
   }
 
   public async sendSearchRequest(q: string) {
@@ -14,7 +27,7 @@ export class APIManager {
     const response = await fetch(url, {
       method: 'GET',
       headers: {
-        "X-RapidAPI-Key": "419e13ae6bmshdb5832294162af0p1b6561jsn3ddaf87119bc",
+        "X-RapidAPI-Key": import.meta.env.VITE_RAPIDAPI_KEY,
         "X-RapidAPI-Host": "deezerdevs-deezer.p.rapidapi.com",
       }
     });
@@ -24,15 +37,16 @@ export class APIManager {
 
   public musicPreview(data: any) {
     if (this.audioElement) {
-      gsap.fromTo(this.audioElement!, { volume: 1 }, { volume: 0, duration: 5, ease: "power2.out" })
-        .then(() => {
+      gsap.fromTo(this.audioElement!, { volume: maxVolume }, { volume: 0, duration: 5, ease: "power2.out" })
+        /* .then(() => {
           this.audioElement!.pause();
-        });
+        }); */
     }
 
     this.audioElement = new Audio(data.preview);
+    this.audioElement.currentTime = 0;
     this.audioElement.play();
 
-    gsap.fromTo(this.audioElement!, { volume: 0 }, { volume: 1, duration: 5, ease: "power2.out" });
+    gsap.fromTo(this.audioElement!, { volume: 0 }, { volume: maxVolume, duration: 5, ease: "power2.out" });
   }
 }
