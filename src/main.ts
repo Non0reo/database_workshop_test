@@ -1,4 +1,4 @@
 import './style.css';
-import { App } from './classes/app.ts';
+import { App } from './classes/App.ts';
 
 new App();

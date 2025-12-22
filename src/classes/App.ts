@@ -1,8 +1,5 @@
-import * as THREE from 'three';
-import { gsap } from 'gsap';
-
 import { createRenderer, createPostProcessing, renderer, composer, outlinePass } from '../utils/renderer.ts';
-import { camera, createCamera, orbit } from '../utils/camera.ts';
+import { createCamera, orbit } from '../utils/camera.ts';
 import { createScene, scene } from '../utils/scene.ts';
 
 import { AlbumCover } from './three/albums.ts';

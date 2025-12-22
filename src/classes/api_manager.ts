@@ -11,6 +11,7 @@ export class APIManager {
   
   constructor() {
     this.supabase = createClient(this.supabaseURL.toString(), this.supabaseKey);
+    console.log(import.meta.env);
   }
 
   public async sendSearchRequest(q: string): Promise<JSON> {
