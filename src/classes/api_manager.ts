@@ -6,7 +6,7 @@ import { FastAverageColor } from 'fast-average-color';
 export class APIManager {
   public audioElements: AudioManager[] = [];
   public supabase: SupabaseClient;
-  public supabaseURL: URL = new URL('https://nnyqmqabnvohdbfvcclp.supabase.co');
+  public supabaseURL: URL = new URL(import.meta.env.VITE_SB_URL);
   public supabaseKey: string = import.meta.env.VITE_SB_KEY;
   
   constructor() {
@@ -21,7 +21,7 @@ export class APIManager {
       method: 'GET',
       headers: {
         "X-RapidAPI-Key": import.meta.env.VITE_RAPIDAPI_KEY,
-        "X-RapidAPI-Host": "deezerdevs-deezer.p.rapidapi.com",
+        "X-RapidAPI-Host": import.meta.env.VITE_RAPIDAPI_HOST,
       }
     });
     const result = await response.json();
@@ -39,7 +39,7 @@ export class APIManager {
       method: 'GET',
       headers: {
         "X-RapidAPI-Key": import.meta.env.VITE_RAPIDAPI_KEY,
-        "X-RapidAPI-Host": "deezerdevs-deezer.p.rapidapi.com",
+        "X-RapidAPI-Host": import.meta.env.VITE_RAPIDAPI_HOST,
       }
     });
     const result = await response.json();
@@ -66,18 +66,26 @@ export class APIManager {
       method: 'GET',
       headers: {
         "X-RapidAPI-Key": import.meta.env.VITE_RAPIDAPI_KEY,
-        "X-RapidAPI-Host": "deezerdevs-deezer.p.rapidapi.com",
+        "X-RapidAPI-Host": import.meta.env.VITE_RAPIDAPI_HOST,
       }
     });
     const result = await response.json();
 
-    this.audioElements.forEach((value) => {
+    /* this.audioElements.forEach((value) => {
       value.fadeOut();
-    })
+    }) */
+    this.stopMusicPreviews();
 
     this.audioElements.push(new AudioManager(result.preview, (manager?: AudioManager) => {
       this.audioElements = this.audioElements.filter((item) => item !== manager);
     }));
+  }
+
+  public stopMusicPreviews() {
+    this.audioElements.forEach((value) => {
+      value.fadeOut();
+    })
+    this.audioElements = [];
   }
 
 

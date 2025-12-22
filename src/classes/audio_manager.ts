@@ -2,7 +2,7 @@ import gsap from 'gsap';
 
 export class AudioManager {
   public maxVolume: number = 0.2;
-  public fadeDuration: number = 5;
+  public fadeDuration: number = 2;
   public audioElement: HTMLAudioElement;
   private endCallback?: (value?: AudioManager) => void;
 
@@ -15,7 +15,7 @@ export class AudioManager {
   }
 
   public fadeIn() {
-    gsap.fromTo(this.audioElement, { volume: 0 }, { volume: this.maxVolume, duration: this.fadeDuration, ease: "power2.out" });
+    gsap.fromTo(this.audioElement, { volume: 0 }, { volume: this.maxVolume, duration: this.fadeDuration, ease: "power3.out" });
     this.audioElement.play();
     
     console.log((this.audioElement.duration - this.fadeDuration) * 1000)
@@ -24,7 +24,7 @@ export class AudioManager {
 
   public fadeOut() {
     console.log('Fading out audio');
-    gsap.to(this.audioElement, { volume: 0, duration: this.fadeDuration, ease: "power2.out" }).then(() => {
+    gsap.to(this.audioElement, { volume: 0, duration: this.fadeDuration, ease: "power3.out" }).then(() => {
       console.log('Audio paused');
       this.audioElement.pause();
       if(this.endCallback) this.endCallback(this);
