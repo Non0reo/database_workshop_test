@@ -35,6 +35,15 @@ export class App {
   }
 
 
+  private deselectCurrentAlbum() {
+    if (this.selectedAlbum) {
+      this.apiManager.stopMusicPreviews();
+      this.selectedAlbum.onBecomeDeselected();
+      this.selectedAlbum = null;
+      outlinePass.selectedObjects = [];
+    }
+  }
+
   private async checkForNewEntry() {
     const inputField = document.querySelector('#input-music') as HTMLInputElement;
     if (!inputField.value) {
@@ -57,6 +66,7 @@ export class App {
       const newAlbum = new AlbumCover(bestResult);
       scene.add(newAlbum);
 
+      this.deselectCurrentAlbum();
       this.selectedAlbum = newAlbum;
       outlinePass.selectedObjects = [this.selectedAlbum];
       newAlbum.onBecomeSelected();
@@ -92,17 +102,12 @@ export class App {
         });
 
         if (albumCover) {
-          if (this.selectedAlbum === albumCover) {
-
-            this.apiManager.stopMusicPreviews();
-            this.selectedAlbum.onBecomeDeselected();
-            this.selectedAlbum = null;
-            outlinePass.selectedObjects = [];
-            return;
-          }
+          if (this.selectedAlbum === albumCover)
+            return this.deselectCurrentAlbum();
 
           if (this.selectedAlbum)
-            this.selectedAlbum.onBecomeDeselected();
+            this.deselectCurrentAlbum();
+
           this.selectedAlbum = albumCover;
           outlinePass.selectedObjects = [this.selectedAlbum];
           this.apiManager.musicPreview(albumCover.trackInfo);

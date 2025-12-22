@@ -10,7 +10,7 @@ function createCamera(renderer: THREE.WebGLRenderer) {
     orbit.enableDamping = true;
     orbit.dampingFactor = 0.04;
 
-    camera.position.set(0, 0, 2);
+    camera.position.set(0, 0, 20);
 
     return { camera, orbit };
 }

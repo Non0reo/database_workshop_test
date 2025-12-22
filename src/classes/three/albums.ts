@@ -52,8 +52,8 @@ export class AlbumCover extends THREE.Object3D {
     });
     gsap.to(this.position, {
       ...this.targetPosition,
-      duration: 2,
-      ease: 'power1.inOut'
+      duration: 1,
+      ease: 'power4.inOut'
     });
   }
 
