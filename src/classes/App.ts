@@ -101,6 +101,8 @@ export class App {
             return;
           }
 
+          if (this.selectedAlbum)
+            this.selectedAlbum.onBecomeDeselected();
           this.selectedAlbum = albumCover;
           outlinePass.selectedObjects = [this.selectedAlbum];
           this.apiManager.musicPreview(albumCover.trackInfo);

@@ -52,7 +52,7 @@ export class AlbumCover extends THREE.Object3D {
     });
     gsap.to(this.position, {
       ...this.targetPosition,
-      duration: Math.random() * 2 + 2,
+      duration: 2,
       ease: 'power1.inOut'
     });
   }
