@@ -28,8 +28,14 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      - name: Set environment variables
+        env:
+          VITE_SB_KEY: ${{ Supabase.VITE_SB_KEY }}
+          VITE_SB_URL: ${{ Supabase.VITE_SB_URL }}
+          VITE_RAPIDAPI_KEY: ${{ RapidAPI.VITE_RAPIDAPI_KEY }}
+          VITE_RAPIDAPI_HOST: ${{ RapidAPI.VITE_RAPIDAPI_HOST }}
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v5²
       - name: Set up Node
         uses: actions/setup-node@v6
         with:
