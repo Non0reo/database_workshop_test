@@ -28,9 +28,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Set environment variables
-        shell: bash
-        env:
+      - shell: bash
+        with:
           VITE_SB_KEY: ${{ secrets.VITE_SB_KEY }}
           VITE_SB_URL: ${{ secrets.VITE_SB_URL }}
           VITE_RAPIDAPI_KEY: ${{ secrets.VITE_RAPIDAPI_KEY }}
