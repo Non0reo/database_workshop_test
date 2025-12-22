@@ -31,10 +31,10 @@ jobs:
       - name: Set environment variables
       - shell: bash
         env:
-          VITE_SB_KEY: ${{ vars.VITE_SB_KEY }}
-          VITE_SB_URL: ${{ vars.VITE_SB_URL }}
-          VITE_RAPIDAPI_KEY: ${{ vars.VITE_RAPIDAPI_KEY }}
-          VITE_RAPIDAPI_HOST: ${{ vars.VITE_RAPIDAPI_HOST }}
+          VITE_SB_KEY: ${{ secrets.VITE_SB_KEY }}
+          VITE_SB_URL: ${{ secrets.VITE_SB_URL }}
+          VITE_RAPIDAPI_KEY: ${{ secrets.VITE_RAPIDAPI_KEY }}
+          VITE_RAPIDAPI_HOST: ${{ secrets.VITE_RAPIDAPI_HOST }}
         run: |
           echo "VITE_SB_KEY=$VITE_SB_KEY" >> $GITHUB_ENV
           echo "VITE_SB_URL=$VITE_SB_URL" >> $GITHUB_ENV
