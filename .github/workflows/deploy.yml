@@ -35,11 +35,6 @@ jobs:
           VITE_SB_URL: ${{ secrets.VITE_SB_URL }}
           VITE_RAPIDAPI_KEY: ${{ secrets.VITE_RAPIDAPI_KEY }}
           VITE_RAPIDAPI_HOST: ${{ secrets.VITE_RAPIDAPI_HOST }}
-        run: |
-          echo "VITE_SB_KEY=$VITE_SB_KEY" >> $GITHUB_ENV
-          echo "VITE_SB_URL=$VITE_SB_URL" >> $GITHUB_ENV
-          echo "VITE_RAPIDAPI_KEY=$VITE_RAPIDAPI_KEY" >> $GITHUB_ENV
-          echo "VITE_RAPIDAPI_HOST=$VITE_RAPIDAPI_HOST" >> $GITHUB_ENV
       - name: Checkout
         uses: actions/checkout@v5²
       - name: Set up Node
