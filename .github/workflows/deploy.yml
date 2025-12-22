@@ -30,10 +30,10 @@ jobs:
     steps:
       - name: Set environment variables
         env:
-          VITE_SB_KEY: ${{ Supabase.VITE_SB_KEY }}
-          VITE_SB_URL: ${{ Supabase.VITE_SB_URL }}
-          VITE_RAPIDAPI_KEY: ${{ RapidAPI.VITE_RAPIDAPI_KEY }}
-          VITE_RAPIDAPI_HOST: ${{ RapidAPI.VITE_RAPIDAPI_HOST }}
+          VITE_SB_KEY: ${{ vars.VITE_SB_KEY }}
+          VITE_SB_URL: ${{ vars.VITE_SB_URL }}
+          VITE_RAPIDAPI_KEY: ${{ vars.VITE_RAPIDAPI_KEY }}
+          VITE_RAPIDAPI_HOST: ${{ vars.VITE_RAPIDAPI_HOST }}
       - name: Checkout
         uses: actions/checkout@v5²
       - name: Set up Node
