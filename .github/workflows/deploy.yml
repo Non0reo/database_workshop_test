@@ -36,7 +36,7 @@ jobs:
           VITE_RAPIDAPI_HOST: ${{ secrets.VITE_RAPIDAPI_HOST }}
         run: echo "Environment variables set to ${{ secrets.VITE_SB_KEY }}, ${{ secrets.VITE_SB_URL }}, ${{ secrets.VITE_RAPIDAPI_KEY }}, ${{ secrets.VITE_RAPIDAPI_HOST }}"
       - name: Checkout
-        uses: actions/checkout@v5²
+        uses: actions/checkout@v5
       - name: Set up Node
         uses: actions/setup-node@v6
         with:
