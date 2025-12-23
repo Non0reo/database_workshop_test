@@ -37,12 +37,16 @@ export class AlbumCover extends THREE.Object3D {
     this.add(this.mesh);
     this.add(this.disc);
 
+    //Make targetPosition point to a random position on a sphere of radius 10
+    const phi = Math.acos(1 - 2 * Math.random());
+    const theta = Math.PI * (1 + Math.sqrt(5)) * Math.random();
+    const radius = 10;
+
     this.targetPosition.set(
-      Math.random() - 0.5,
-      Math.random() - 0.5,
-      Math.random() - 0.5
+      radius * Math.cos(theta) * Math.sin(phi),
+      radius * Math.sin(theta) * Math.sin(phi),
+      radius * Math.cos(phi)
     );
-    this.targetPosition.normalize().multiplyScalar(10);
 
     gsap.to(this.rotation, {
       y: Math.PI * 2,

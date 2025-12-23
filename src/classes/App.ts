@@ -5,11 +5,15 @@ import { createScene, scene } from '../utils/scene.ts';
 import { AlbumCover } from './three/albums.ts';
 import { APIManager } from './api_manager.ts';
 import { Raycaster } from './raycaster.ts';
+import { GUI } from './gui.ts';
+
+export let generalVolume: number;
 
 export class App {
   public apiManager = new APIManager();
   public raycaster = new Raycaster();
   public selectedAlbum: AlbumCover | null = null;
+  public gui: GUI = new GUI();
 
   constructor() {
     createRenderer(this.draw);
@@ -17,7 +21,7 @@ export class App {
     createScene();
     createPostProcessing();
 
-    //testSprites();
+    this.setGeneralVolume(0.5);
     this.initGuiEvents();
 
     this.apiManager.getTrackDatabase().then(tracks => {
@@ -35,17 +39,30 @@ export class App {
   }
 
 
+  private selectAlbum(album: AlbumCover) {
+    this.deselectCurrentAlbum();
+    this.selectedAlbum = album;
+    outlinePass.selectedObjects = [this.selectedAlbum];
+    this.selectedAlbum.onBecomeSelected();
+    this.apiManager.musicPreview(this.selectedAlbum.trackInfo);
+    this.gui.bottom.trashButton.disabled = false;
+    this.gui.top.setTrack(this.selectedAlbum.trackInfo);
+    this.gui.top.open();
+  }
+
   private deselectCurrentAlbum() {
     if (this.selectedAlbum) {
       this.apiManager.stopMusicPreviews();
       this.selectedAlbum.onBecomeDeselected();
       this.selectedAlbum = null;
       outlinePass.selectedObjects = [];
+      this.gui.bottom.trashButton.disabled = true;
+      this.gui.top.close();
     }
   }
 
   private async checkForNewEntry() {
-    const inputField = document.querySelector('#input-music') as HTMLInputElement;
+    const inputField = this.gui.bottom.musicInput;
     if (!inputField.value) {
       inputField.setCustomValidity('No song provided');
       inputField.reportValidity();
@@ -61,21 +78,32 @@ export class App {
 
     if (bestResult) {
       this.apiManager.putInDatabase(bestResult);
-      this.apiManager.musicPreview(bestResult);
-
       const newAlbum = new AlbumCover(bestResult);
       scene.add(newAlbum);
 
-      this.deselectCurrentAlbum();
-      this.selectedAlbum = newAlbum;
-      outlinePass.selectedObjects = [this.selectedAlbum];
-      newAlbum.onBecomeSelected();
+      this.selectAlbum(newAlbum);
 
     } else {
       inputField.setCustomValidity('No results found');
       inputField.reportValidity();
     }
   }
+
+  private async deleteSelectedEntry() {
+    if (this.selectedAlbum) {
+      await this.apiManager.removeFromDatabase(this.selectedAlbum.trackInfo);
+      scene.remove(this.selectedAlbum);
+      this.deselectCurrentAlbum();
+    }
+  }
+
+  private setGeneralVolume(value: number) {
+    const target = this.gui.bottom.volumeInput;
+    generalVolume = Math.max(-Math.log10(1.1 - value), 0);
+    this.apiManager.setPreviewVolume(generalVolume);
+    target.style.setProperty('--volume-level', value * 100 + '%');
+  }
+
 
 
   private initGuiEvents() {
@@ -85,8 +113,18 @@ export class App {
       }
     });
 
-    (document.querySelector('#button-submit') as HTMLInputElement).addEventListener('click', () => {
+    this.gui.bottom.submitButton.addEventListener('click', () => {
       this.checkForNewEntry();
+    });
+
+    this.gui.bottom.trashButton.addEventListener('click', () => {
+      this.gui.bottom.trashButton.disabled = true;
+      this.deleteSelectedEntry();
+    });
+
+    this.gui.bottom.volumeInput.addEventListener('input', (event) => {
+      const volume = parseFloat((event.target as HTMLInputElement).value);
+      this.setGeneralVolume(volume);
     });
 
     renderer.domElement.addEventListener('mousedown', (event) => {
@@ -105,14 +143,7 @@ export class App {
           if (this.selectedAlbum === albumCover)
             return this.deselectCurrentAlbum();
 
-          if (this.selectedAlbum)
-            this.deselectCurrentAlbum();
-
-          this.selectedAlbum = albumCover;
-          outlinePass.selectedObjects = [this.selectedAlbum];
-          this.apiManager.musicPreview(albumCover.trackInfo);
-          this.selectedAlbum.onBecomeSelected();
-          
+          this.selectAlbum(albumCover);          
         }
       }
     });

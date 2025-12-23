@@ -4,14 +4,13 @@ import { AudioManager } from './audio_manager';
 import { FastAverageColor } from 'fast-average-color';
 
 export class APIManager {
-  public audioElements: AudioManager[] = [];
+  public audioManagers: AudioManager[] = [];
   public supabase: SupabaseClient;
   public supabaseURL: URL = new URL(import.meta.env.VITE_SB_URL);
   public supabaseKey: string = import.meta.env.VITE_SB_KEY;
   
   constructor() {
     this.supabase = createClient(this.supabaseURL.toString(), this.supabaseKey);
-    console.log(import.meta.env);
   }
 
   public async sendSearchRequest(q: string): Promise<JSON> {
@@ -72,23 +71,24 @@ export class APIManager {
     });
     const result = await response.json();
 
-    /* this.audioElements.forEach((value) => {
-      value.fadeOut();
-    }) */
     this.stopMusicPreviews();
-
-    this.audioElements.push(new AudioManager(result.preview, (manager?: AudioManager) => {
-      this.audioElements = this.audioElements.filter((item) => item !== manager);
+    this.audioManagers.push(new AudioManager(result.preview, (manager?: AudioManager) => {
+      this.audioManagers = this.audioManagers.filter((item) => item !== manager);
     }));
   }
 
   public stopMusicPreviews() {
-    this.audioElements.forEach((value) => {
+    this.audioManagers.forEach((value) => {
       value.fadeOut();
     })
-    this.audioElements = [];
+    this.audioManagers = [];
   }
 
+  public setPreviewVolume(volume: number) {
+    this.audioManagers.forEach((audioManager) => {
+      audioManager.updateVolume(volume);
+    });
+  }
 
   public async putInDatabase(track: Track) {
     const { error } = await this.supabase
@@ -107,6 +107,16 @@ export class APIManager {
 
     console.log(data, error)
     return data as Track[];
+  }
+
+  public async removeFromDatabase(track: Track) {
+    const { error } = await this.supabase
+      .from('tracks')
+      .delete()
+      .eq('dzid', track.dzid);
+    if(error) {
+      console.error('Error deleting track:', error);
+    }
   }
 
 }

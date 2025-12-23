@@ -9,9 +9,20 @@
   <body>
     <div id="app">
       <canvas id="scene-canvas"></canvas>
+      <div id="info-container">
+        <span class="song title"></span>
+        <span class="song artist year"></span>
+        <!-- <div>
+          <span class="song artist"></span>
+          <span> • </span>
+          <span class="song year"></span>
+        </div> -->
+      </div>
       <div id="ui-container">
+        <button class="button trash" disabled></button>
+        <input type="range" id="input-volume" min="0" max="1" step="0.01" value="0.5" />
         <input type="text" id="input-music" placeholder="Search for your favourite music..." />
-        <button id="button-submit"></button>
+        <button class="button submit"></button>
       </div>
     </div>
     <script type="module" src="/src/main.ts"></script>

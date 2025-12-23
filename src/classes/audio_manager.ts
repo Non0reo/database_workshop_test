@@ -1,9 +1,11 @@
 import gsap from 'gsap';
+import { generalVolume } from './App';
 
 export class AudioManager {
-  public maxVolume: number = 0.2;
+  public maxVolume: number = generalVolume;
   public fadeDuration: number = 2;
   public audioElement: HTMLAudioElement;
+  public canChangeAudioVolume: boolean = true;
   private endCallback?: (value?: AudioManager) => void;
 
   constructor(src: string, endCallback?: (value?: AudioManager) => void) {
@@ -14,20 +16,28 @@ export class AudioManager {
     this.audioElement.addEventListener('loadedmetadata', () => this.fadeIn());
   }
 
+  public updateVolume(value: number) {
+    if (this.canChangeAudioVolume) {
+      this.maxVolume = value;
+      this.audioElement.volume = value;
+    }
+  }
+
   public fadeIn() {
-    gsap.fromTo(this.audioElement, { volume: 0 }, { volume: this.maxVolume, duration: this.fadeDuration, ease: "power3.out" });
+    gsap.fromTo(this.audioElement, { volume: 0 }, { volume: this.maxVolume, duration: this.fadeDuration, ease: "power3.out" })
+      .then(() => {
+        this.canChangeAudioVolume = true;
+      });
     this.audioElement.play();
-    
-    console.log((this.audioElement.duration - this.fadeDuration) * 1000)
     setTimeout(() => this.fadeOut(), (this.audioElement.duration - this.fadeDuration) * 1000);
   }
 
   public fadeOut() {
-    console.log('Fading out audio');
-    gsap.to(this.audioElement, { volume: 0, duration: this.fadeDuration, ease: "power3.out" }).then(() => {
-      console.log('Audio paused');
-      this.audioElement.pause();
-      if(this.endCallback) this.endCallback(this);
-    });
+    this.canChangeAudioVolume = false;
+    gsap.to(this.audioElement, { volume: 0, duration: this.fadeDuration, ease: "power3.out" })
+      .then(() => {
+        this.audioElement.pause();
+        if(this.endCallback) this.endCallback(this);
+      });
   }
 }
