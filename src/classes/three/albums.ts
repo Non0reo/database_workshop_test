@@ -120,9 +120,9 @@ class AlbumDisc extends THREE.Object3D {
 
     if(this.animationTween) this.animationTween.kill();
     gsap.to(this.rotation, {
-      x: 0,
-      duration: 2,
-      ease: 'power2.inOut'
+      x: -Math.PI / 2,
+      duration: 3,
+      ease: 'power1.inOut'
     });
   }
 

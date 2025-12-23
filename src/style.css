@@ -66,6 +66,10 @@ body {
   transition: translate 0.5s ease-in-out;
   pointer-events: none;
 
+  .song > div {
+    text-shadow: 0 0 1rem var(--clr-dark);
+  }
+
   .title {
     margin: 0;
     padding: 0;
